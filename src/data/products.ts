@@ -364,6 +364,82 @@ export const products: Product[] = [
       },
     ],
   },
+  {
+    id: 'ingest-ceramic-dish-set-including-the',
+    name: 'Ceramic Dish Set Including The Tray',
+    slug: 'ceramic-dish-set-including-the',
+    description:
+      'Crafted for daily culinary elegance, this ceramic dish set including the tray combines durable materials with timeless tabletop aesthetics suitable for modern Nigerian kitchens.',
+    categoryId: 'baking',
+    basePrice: 12000,
+    isFeatured: false,
+    isBestSeller: false,
+    rating: 4.8,
+    ratingCount: 16,
+    variants: [
+      { id: 'var-ceramic-dish-set-including-the-1', name: 'Standard Studio', colorHex: '#FAF7F2' },
+    ],
+    images: [
+      {
+        id: 'img-ceramic-dish-set-including-the-1',
+        variantId: 'var-ceramic-dish-set-including-the-1',
+        url: '/images/products/ceramic-dish-set-including-the.webp',
+        alt: 'Ceramic Dish Set Including The Tray presented on brand studio background',
+        isPrimary: true,
+      },
+    ],
+  },
+  {
+    id: 'ingest-set-3-wooden-tray',
+    name: 'Set 3 Wooden Tray',
+    slug: 'set-3-wooden-tray',
+    description:
+      'Crafted for daily culinary elegance, this set 3 wooden tray combines durable materials with timeless tabletop aesthetics suitable for modern Nigerian kitchens.',
+    categoryId: 'tableware',
+    basePrice: 22000,
+    isFeatured: false,
+    isBestSeller: false,
+    rating: 4.8,
+    ratingCount: 16,
+    variants: [
+      { id: 'var-set-3-wooden-tray-1', name: 'Standard Studio', colorHex: '#FAF7F2' },
+    ],
+    images: [
+      {
+        id: 'img-set-3-wooden-tray-1',
+        variantId: 'var-set-3-wooden-tray-1',
+        url: '/images/products/set-3-wooden-tray.webp',
+        alt: 'Set 3 Wooden Tray presented on brand studio background',
+        isPrimary: true,
+      },
+    ],
+  },
+  {
+    id: 'ingest-16pcs---tea-cup--saucer-6cups',
+    name: '16pcs - Tea Cup & Saucer 6cups 6saucer',
+    slug: '16pcs---tea-cup--saucer-6cups',
+    description:
+      'Crafted for daily culinary elegance, this 16pcs - tea cup & saucer 6cups 6saucer combines durable materials with timeless tabletop aesthetics suitable for modern Nigerian kitchens.',
+    categoryId: 'tableware',
+    basePrice: 8500,
+    isFeatured: false,
+    isBestSeller: false,
+    rating: 4.8,
+    ratingCount: 16,
+    variants: [
+      { id: 'var-16pcs---tea-cup--saucer-6cups-1', name: 'Standard Studio', colorHex: '#FAF7F2' },
+    ],
+    images: [
+      {
+        id: 'img-16pcs---tea-cup--saucer-6cups-1',
+        variantId: 'var-16pcs---tea-cup--saucer-6cups-1',
+        url: '/images/products/16pcs---tea-cup--saucer-6cups.webp',
+        alt: '16pcs - Tea Cup & Saucer 6cups 6saucer presented on brand studio background',
+        isPrimary: true,
+      },
+    ],
+  },
+
 ];
 
 export function getProductsByCategory(categoryId: string): Product[] {
