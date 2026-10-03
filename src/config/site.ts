@@ -57,7 +57,7 @@ export const siteConfig: SiteConfig = {
   },
 
   contact: {
-    whatsappNumber: process.env.NEXT_PUBLIC_WHATSAPP_PHONE || '2348000000000',
+    whatsappNumber: process.env.NEXT_PUBLIC_WHATSAPP_PHONE || '2349167053972',
     defaultWhatsAppMessage:
       'Hi Jirel Hitchen Hub, I have an inquiry regarding your cookware collection.',
     supportEmail:

@@ -109,7 +109,7 @@ export default function ContactSection() {
 
               {/* WhatsApp CTA Button */}
               <a
-                href="https://wa.me/2348000000000?text=Hi%20Jirel%20Hitchen%20Hub,%20I%20have%20an%20inquiry%20regarding%20an%20order."
+                href="https://wa.me/2349167053972?text=Hi%20Jirel%20Hitchen%20Hub,%20I%20have%20an%20inquiry%20regarding%20an%20order."
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-6 flex items-center justify-center gap-2.5 w-full bg-[#25D366] hover:bg-[#20ba59] text-white font-semibold py-3.5 px-6 rounded-xl transition-colors duration-200 shadow-sm shadow-[#25D366]/20 cursor-pointer"
