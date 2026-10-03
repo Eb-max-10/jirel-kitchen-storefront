@@ -68,12 +68,23 @@ export const supabase = isSupabaseConfigured()
 export function getSupabaseAdminClient(): SupabaseClient | null {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-  if (!url || !serviceKey || !isSupabaseConfigured()) {
+  if (!url || !isSupabaseConfigured()) {
     return null;
   }
 
-  return createClient(url, serviceKey, {
+  // Use service role key if available and not a placeholder; otherwise fall back to anon key
+  const activeKey =
+    serviceKey && !serviceKey.includes('placeholder') && !serviceKey.includes('your_')
+      ? serviceKey
+      : anonKey;
+
+  if (!activeKey) {
+    return null;
+  }
+
+  return createClient(url, activeKey, {
     auth: {
       persistSession: false,
       autoRefreshToken: false,
