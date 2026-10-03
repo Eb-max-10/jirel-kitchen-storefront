@@ -23,7 +23,7 @@ export default function Footer() {
           {/* Brand */}
           <div>
             <Link href="/" className="font-heading text-2xl font-bold">
-              Jirel Kitchen
+              Jirel Hitchen Hub
             </Link>
             <p className="mt-4 text-sm text-gray-400 leading-relaxed max-w-xs">
               Premium kitchenware for the modern kitchen. Quality cookware,
@@ -73,7 +73,7 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="mt-12 pt-8 border-t border-gray-800">
           <p className="text-sm text-gray-500 text-center">
-            © {new Date().getFullYear()} Jirel Kitchen. All rights reserved.
+            © {new Date().getFullYear()} Jirel Hitchen Hub. All rights reserved.
           </p>
         </div>
       </div>

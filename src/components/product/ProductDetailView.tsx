@@ -194,7 +194,7 @@ export default function ProductDetailView({
 
   // Pre-filled WhatsApp inquiry link
   const variantText = selectedVariant ? ` (${selectedVariant.name})` : '';
-  const waInquiry = `Hi Jirel Kitchen, I would like to order:
+  const waInquiry = `Hi Jirel Hitchen Hub, I would like to order:
 • Product: ${product.name}${variantText}
 • Quantity: ${quantity}
 • Total Price: ${formatPrice(effectivePrice * quantity)}

@@ -66,8 +66,8 @@ export default function Header() {
 
           {/* Center: Logo */}
           <Link href="/" className="absolute left-1/2 -translate-x-1/2">
-            <h1 className="font-heading text-xl md:text-2xl font-bold text-charcoal tracking-tight">
-              Jirel Kitchen
+            <h1 className="font-heading text-xl md:text-2xl font-bold text-charcoal tracking-tight whitespace-nowrap">
+              Jirel Hitchen Hub
             </h1>
           </Link>
 

@@ -19,7 +19,7 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: 'Jirel Kitchen — Premium Kitchenware & Cookware',
+  title: 'Jirel Hitchen Hub — Premium Kitchenware & Cookware',
   description:
     'Shop premium cookware, knives, and kitchen essentials. Quality kitchenware delivered across Nigeria.',
   keywords: ['kitchenware', 'cookware', 'Nigeria', 'pots', 'pans', 'knives', 'kitchen'],
