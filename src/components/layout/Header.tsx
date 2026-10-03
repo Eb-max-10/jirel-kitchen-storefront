@@ -14,19 +14,22 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navLinks = [
-    { name: 'Shop', href: '#all-products' },
-    { name: 'Best Sellers', href: '#best-sellers' },
-    { name: 'Help & Contact', href: '#contact' },
+    { name: 'Shop', href: '/#all-products' },
+    { name: 'Best Sellers', href: '/#best-sellers' },
+    { name: 'Help & Contact', href: '/#contact' },
   ];
 
   const handleScrollClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    if (href.startsWith('#')) {
+    const hash = href.includes('#') ? '#' + href.split('#')[1] : '';
+    if (typeof window !== 'undefined' && window.location.pathname === '/' && hash) {
       e.preventDefault();
-      const targetId = href.replace('#', '');
+      const targetId = hash.replace('#', '');
       const element = document.getElementById(targetId);
       if (element) {
         element.scrollIntoView({ behavior: 'smooth' });
       }
+      setMobileMenuOpen(false);
+    } else {
       setMobileMenuOpen(false);
     }
   };
@@ -49,14 +52,14 @@ export default function Header() {
             {/* Desktop nav */}
             <nav className="hidden md:flex items-center gap-8">
               {navLinks.map((link) => (
-                <a
+                <Link
                   key={link.name}
                   href={link.href}
                   onClick={(e) => handleScrollClick(e, link.href)}
                   className="text-sm font-medium text-warm-gray hover:text-charcoal transition-colors cursor-pointer"
                 >
                   {link.name}
-                </a>
+                </Link>
               ))}
             </nav>
           </div>
@@ -112,14 +115,14 @@ export default function Header() {
           >
             <div className="px-4 py-4 space-y-3">
               {navLinks.map((link) => (
-                <a
+                <Link
                   key={link.name}
                   href={link.href}
                   onClick={(e) => handleScrollClick(e, link.href)}
                   className="block text-sm font-medium text-warm-gray hover:text-charcoal transition-colors py-1 cursor-pointer"
                 >
                   {link.name}
-                </a>
+                </Link>
               ))}
             </div>
           </motion.nav>

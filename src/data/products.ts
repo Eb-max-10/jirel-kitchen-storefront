@@ -24,6 +24,7 @@ export interface Product {
   isBestSeller: boolean;
   rating: number;
   ratingCount: number;
+  specs?: Record<string, string>;
   variants: ProductVariant[];
   images: ProductImage[];
 }
@@ -356,7 +357,7 @@ export const products: Product[] = [
       },
       {
         id: 'img-10-2',
-        variantId: 'var-10-2',
+        variantId: 'var-10-1',
         url: 'https://images.unsplash.com/photo-1594998893017-36147cbcae05?w=800&auto=format&fit=crop&q=80',
         alt: 'Freshly baked pastries on baking sheet with even golden finish',
         isPrimary: false,

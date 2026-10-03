@@ -5,10 +5,12 @@ import nextTs from "eslint-config-next/typescript";
 const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
-  // Override default ignores of eslint-config-next.
+  // Global ignore patterns to exclude build caches, test suites, and agent logs
   globalIgnores([
-    // Default ignores of eslint-config-next:
     ".next/**",
+    ".vercel/**",
+    ".agents/**",
+    "tests/**",
     "out/**",
     "build/**",
     "next-env.d.ts",

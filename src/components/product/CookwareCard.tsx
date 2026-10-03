@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { motion } from 'motion/react';
 import { ShoppingBag, Eye, Heart } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
@@ -48,17 +49,19 @@ export default function CookwareCard({ product }: { product: Product }) {
 
       {/* Image Container */}
       <div className="relative aspect-square overflow-hidden bg-[#F5F2EB]">
-        <motion.img
-          src={primaryImage?.url}
-          alt={product.name}
-          className="w-full h-full object-cover"
-          animate={{ scale: isHovered ? 1.05 : 1 }}
-          transition={{ duration: 0.5, ease: 'easeOut' }}
-        />
+        <Link href={`/products/${product.slug}`} className="block w-full h-full">
+          <motion.img
+            src={primaryImage?.url}
+            alt={product.name}
+            className="w-full h-full object-cover"
+            animate={{ scale: isHovered ? 1.05 : 1 }}
+            transition={{ duration: 0.5, ease: 'easeOut' }}
+          />
+        </Link>
 
         {/* Action Buttons Cluster */}
         <motion.div
-          className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2"
+          className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10"
           initial={{ opacity: 0, y: 10 }}
           animate={
             isHovered ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }
@@ -72,12 +75,13 @@ export default function CookwareCard({ product }: { product: Product }) {
           >
             <ShoppingBag className="w-4 h-4" />
           </button>
-          <button
+          <Link
+            href={`/products/${product.slug}`}
             aria-label="Quick view"
             className="w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center hover:bg-charcoal hover:text-white transition-colors duration-150 cursor-pointer"
           >
             <Eye className="w-4 h-4" />
-          </button>
+          </Link>
           <button
             aria-label="Add to wishlist"
             className="w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center hover:bg-charcoal hover:text-white transition-colors duration-150 cursor-pointer"
@@ -89,9 +93,11 @@ export default function CookwareCard({ product }: { product: Product }) {
 
       {/* Product Info */}
       <div className="p-4">
-        <h3 className="font-medium text-charcoal text-sm leading-tight">
-          {product.name}
-        </h3>
+        <Link href={`/products/${product.slug}`} className="block group/title">
+          <h3 className="font-medium text-charcoal text-sm leading-tight group-hover/title:text-sage transition-colors">
+            {product.name}
+          </h3>
+        </Link>
 
         {/* Price */}
         <div className="flex items-center gap-2 mt-1.5">
