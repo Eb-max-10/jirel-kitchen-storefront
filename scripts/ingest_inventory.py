@@ -132,20 +132,33 @@ def analyze_raw_item(image_path: Path, raw_caption: str) -> dict:
         }}
         """
 
-        response = client.models.generate_content(
-            model="gemini-2.5-flash",
-            contents=[
-                types.Part.from_bytes(data=image_bytes, mime_type="image/jpeg"),
-                prompt
-            ],
-            config=types.GenerateContentConfig(response_mime_type="application/json")
-        )
+        response = None
+        # Try best supported multimodal models in order
+        for model_name in ["gemini-3.5-flash", "gemini-3.8-flash", "gemini-2.5-flash", "gemini-flash-latest"]:
+            try:
+                response = client.models.generate_content(
+                    model=model_name,
+                    contents=[
+                        types.Part.from_bytes(data=image_bytes, mime_type="image/jpeg"),
+                        prompt
+                    ],
+                    config=types.GenerateContentConfig(response_mime_type="application/json")
+                )
+                if response and response.text:
+                    break
+            except Exception as model_err:
+                # If specific model is deprecated or busy, try next candidate
+                continue
+
+        if not response or not response.text:
+            raise RuntimeError("All Gemini model candidates failed to return response")
+
         data = json.loads(response.text)
         if "box_2d" not in data or len(data["box_2d"]) != 4:
             data["box_2d"] = [80, 80, 920, 920]
         return data
     except Exception as e:
-        print(f"  [Gemini Warning] Vision API error ({e}). Falling back to heuristic analyzer.")
+        print(f"  [Gemini Notice] Vision API notice ({e}). Falling back to heuristic analyzer.")
         return fallback_heuristic_analyzer(image_path, raw_caption)
 
 def process_product(image_path: Path, raw_caption: str) -> dict:

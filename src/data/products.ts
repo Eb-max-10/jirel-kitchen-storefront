@@ -439,6 +439,81 @@ export const products: Product[] = [
       },
     ],
   },
+  {
+    id: 'ingest-ceramic-dish-set-with-tray',
+    name: 'Ceramic Dish Set with Tray',
+    slug: 'ceramic-dish-set-with-tray',
+    description:
+      'An elegant ceramic serving dish set designed for stylish presentation, complete with a convenient matching tray.',
+    categoryId: 'tableware',
+    basePrice: 12000,
+    isFeatured: false,
+    isBestSeller: false,
+    rating: 4.8,
+    ratingCount: 16,
+    variants: [
+      { id: 'var-ceramic-dish-set-with-tray-1', name: 'Standard Studio', colorHex: '#FAF7F2' },
+    ],
+    images: [
+      {
+        id: 'img-ceramic-dish-set-with-tray-1',
+        variantId: 'var-ceramic-dish-set-with-tray-1',
+        url: '/images/products/ceramic-dish-set-with-tray.webp',
+        alt: 'Ceramic Dish Set with Tray presented on brand studio background',
+        isPrimary: true,
+      },
+    ],
+  },
+  {
+    id: 'ingest-set-of-3-wooden-salad-bowls-an',
+    name: 'Set of 3 Wooden Salad Bowls and Trays',
+    slug: 'set-of-3-wooden-salad-bowls-an',
+    description:
+      'Crafted from natural wood, these durable and elegant wooden bowls are perfect for serving salads, poke bowls, and appetizers. Add a rustic charm to your dining experience with this premium tableware set.',
+    categoryId: 'tableware',
+    basePrice: 22000,
+    isFeatured: false,
+    isBestSeller: false,
+    rating: 4.8,
+    ratingCount: 16,
+    variants: [
+      { id: 'var-set-of-3-wooden-salad-bowls-an-1', name: 'Standard Studio', colorHex: '#FAF7F2' },
+    ],
+    images: [
+      {
+        id: 'img-set-of-3-wooden-salad-bowls-an-1',
+        variantId: 'var-set-of-3-wooden-salad-bowls-an-1',
+        url: '/images/products/set-of-3-wooden-salad-bowls-an.webp',
+        alt: 'Set of 3 Wooden Salad Bowls and Trays presented on brand studio background',
+        isPrimary: true,
+      },
+    ],
+  },
+  {
+    id: 'ingest-16-piece-ceramic-tea-cup-and-s',
+    name: '16-Piece Ceramic Tea Cup and Saucer Dinnerware Set',
+    slug: '16-piece-ceramic-tea-cup-and-s',
+    description:
+      'Elegant organic-edged ceramic tableware set featuring beautiful rustic finishes. Perfect for stylish dining presentation and everyday use.',
+    categoryId: 'tableware',
+    basePrice: 8500,
+    isFeatured: false,
+    isBestSeller: false,
+    rating: 4.8,
+    ratingCount: 16,
+    variants: [
+      { id: 'var-16-piece-ceramic-tea-cup-and-s-1', name: 'Standard Studio', colorHex: '#FAF7F2' },
+    ],
+    images: [
+      {
+        id: 'img-16-piece-ceramic-tea-cup-and-s-1',
+        variantId: 'var-16-piece-ceramic-tea-cup-and-s-1',
+        url: '/images/products/16-piece-ceramic-tea-cup-and-s.webp',
+        alt: '16-Piece Ceramic Tea Cup and Saucer Dinnerware Set presented on brand studio background',
+        isPrimary: true,
+      },
+    ],
+  },
 
 ];
 
