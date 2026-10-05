@@ -1,14 +1,102 @@
 [
   {
-    "file": "item1.jpg",
-    "caption": "Ceramic dish set 12k including the tray"
+    "id": 1,
+    "file": "1.jpeg",
+    "caption": "16pcs dinner set s111 ceramic porcelain plates and bowls dinnerware"
   },
   {
-    "file": "item2.jpg",
-    "caption": "Set 3 wooden tray 22k"
+    "id": 2,
+    "file": "2.jpeg",
+    "caption": "Stainless steel vacuum insulated thermal water bottles with leakproof cap, up to 15 colours available 7500"
   },
   {
-    "file": "item3.jpg",
-    "caption": "16pcs DZ01 07 - Tea cup & saucer 6cups 6saucer 8500"
+    "id": 3,
+    "file": "3.jpeg",
+    "caption": "Ceramic dish set 12k including the serving tray"
+  },
+  {
+    "id": 4,
+    "file": "4.jpeg",
+    "caption": "Set 3 nested wooden serving trays 22k"
+  },
+  {
+    "id": 5,
+    "file": "5.jpeg",
+    "caption": "Tea cup & saucer set 6cups 6saucer 8500"
+  },
+  {
+    "id": 6,
+    "file": "6.jpeg",
+    "caption": "32pcs luxury ceramic dinner set with soup tureen and serving bowls 65k"
+  },
+  {
+    "id": 7,
+    "file": "7.jpeg",
+    "caption": "2pcs luxury ceramic serving bowl with gold rim edge 5500"
+  },
+  {
+    "id": 8,
+    "file": "8.jpeg",
+    "caption": "1200ml stainless steel insulated travel tumbler with handle and straw 8500"
+  },
+  {
+    "id": 9,
+    "file": "9.jpeg",
+    "caption": "Premium glass water cup tumbler 5500"
+  },
+  {
+    "id": 10,
+    "file": "10.jpeg",
+    "caption": "Premium gold stainless steel flatware tableware set, 24pcs with display stand, 25k"
+  },
+  {
+    "id": 11,
+    "file": "11.jpeg",
+    "caption": "Office insulated stainless steel coffee cup with handle 1800"
+  },
+  {
+    "id": 12,
+    "file": "12.jpeg",
+    "caption": "Luxury white ceramic dinner plate with gold rim, 5500"
+  },
+  {
+    "id": 13,
+    "file": "13.jpeg",
+    "caption": "Porcelain side plate and flat dinner plate set, wholesale 45k per dozen side plate, 55k per dozen flat plate (5000 each retail)"
+  },
+  {
+    "id": 14,
+    "file": "14.jpeg",
+    "caption": "Gold-rimmed white ceramic dinner and soup plate set, wholesale 50k - 55k per dozen (5500 each retail)"
+  },
+  {
+    "id": 15,
+    "file": "15.jpeg",
+    "caption": "Clear glass mug tumbler 2-piece pack, 4k per pack of 2pcs"
+  },
+  {
+    "id": 16,
+    "file": "16.jpeg",
+    "caption": "G-Horse clear embossed glass tumbler 6-piece pack 330ml, 6k per pack of 6pcs"
+  },
+  {
+    "id": 17,
+    "file": "17.jpeg",
+    "caption": "3-in-1 nested glitter drinking tumbler set with rainbow lids, 2600"
+  },
+  {
+    "id": 18,
+    "file": "18.jpeg",
+    "caption": "Gradient frosted BPA-free motivational sports water bottle set with silicone straw, 6500"
+  },
+  {
+    "id": 19,
+    "file": "19.jpeg",
+    "caption": "Stainless steel thermal vacuum travel mug flask, 5500 each"
+  },
+  {
+    "id": 20,
+    "file": "20.jpeg",
+    "caption": "Blooming floral porcelain coffee cup and saucer set with gold trim, 9k per pack (70k per carton of 8 packs)"
   }
 ]

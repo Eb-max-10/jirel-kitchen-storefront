@@ -1,6 +1,7 @@
 import os
 import sys
 import re
+import time
 import json
 from pathlib import Path
 from PIL import Image
@@ -42,8 +43,8 @@ def load_gemini_api_key():
 
 def fallback_heuristic_analyzer(image_path: Path, raw_caption: str) -> dict:
     """
-    Intelligent fallback parser for supplier captions when GEMINI_API_KEY is not configured.
-    Handles '12k' -> 12000, '22k' -> 22000, '8500' -> 8500, variant counts, and category matching.
+    Intelligent fallback parser for supplier captions when GEMINI_API_KEY is not configured
+    or when API is temporarily unavailable.
     """
     caption_lower = raw_caption.lower()
     
@@ -53,39 +54,38 @@ def fallback_heuristic_analyzer(image_path: Path, raw_caption: str) -> dict:
     if k_match:
         price = int(float(k_match.group(1)) * 1000)
     else:
-        num_match = re.search(r'\b(\d{4,6})\b', caption_lower)
+        num_match = re.search(r'\b(\d{3,6})\b', caption_lower)
         if num_match:
             price = int(num_match.group(1))
 
-    # 2. Category mapping
+    # 2. Category mapping (strict schema: pots-pans, tableware, utensils, appliances)
     category = "tableware"
-    if any(w in caption_lower for w in ["pot", "pan", "skillet", "cookware"]):
-        category = "pots-pans"
-    elif any(w in caption_lower for w in ["knife", "knives", "cleaver", "blade"]):
-        category = "knives"
-    elif any(w in caption_lower for w in ["spoon", "spatula", "whisk", "utensil", "tongs", "turner"]):
+    if any(w in caption_lower for w in ["pot", "pan", "skillet", "cookware", "casserole", "baking", "sheet", "tray", "dish"]) and "wooden tray" not in caption_lower:
+        if any(w in caption_lower for w in ["pot", "pan", "skillet", "cookware"]):
+            category = "pots-pans"
+        elif any(w in caption_lower for w in ["dish", "tray"]):
+            category = "tableware"
+    elif any(w in caption_lower for w in ["knife", "knives", "cleaver", "blade", "spoon", "spatula", "whisk", "utensil", "tongs"]):
         category = "utensils"
-    elif any(w in caption_lower for w in ["bake", "cake", "tray", "sheet", "oven", "pan"]) and "wooden tray" not in caption_lower:
-        category = "baking"
     elif any(w in caption_lower for w in ["blender", "kettle", "cooker", "appliance", "fryer"]):
         category = "appliances"
-    elif any(w in caption_lower for w in ["dish", "tray", "plate", "bowl", "cup", "saucer", "dinner", "tea"]):
+    elif any(w in caption_lower for w in ["plate", "bowl", "cup", "saucer", "dinner", "tea", "tumbler", "bottle", "mug", "tableware", "tray", "flatware", "cutlery"]):
         category = "tableware"
 
     # 3. Clean retail title
     cleaned_caption = re.sub(r'\b\d+(?:\.\d+)?k\b', '', raw_caption, flags=re.IGNORECASE)
-    cleaned_caption = re.sub(r'\b\d{4,6}\b', '', cleaned_caption)
+    cleaned_caption = re.sub(r'\b\d{3,6}\b', '', cleaned_caption)
     cleaned_caption = re.sub(r'DZ\d+\s*\d*', '', cleaned_caption, flags=re.IGNORECASE)
     cleaned_caption = re.sub(r'\s+', ' ', cleaned_caption).strip(' -:')
     
     words = [w.capitalize() for w in cleaned_caption.split() if w]
-    name = " ".join(words) if words else "Premium Kitchenware"
+    name = " ".join(words) if words else f"Kitchenware Item {image_path.stem}"
     if len(name) < 4:
-        name = "Artisan Kitchenware Set"
+        name = f"Artisan Tableware {image_path.stem}"
 
     description = (
-        f"Crafted for daily culinary elegance, this {name.lower()} combines durable materials "
-        f"with timeless tabletop aesthetics suitable for modern Nigerian kitchens."
+        f"Crafted from premium food-grade materials for enduring durability and daily elegance. "
+        f"Hand wash with mild soap and dry with a soft cloth to preserve its pristine surface finish."
     )
 
     return {
@@ -93,11 +93,11 @@ def fallback_heuristic_analyzer(image_path: Path, raw_caption: str) -> dict:
         "category": category,
         "price": price,
         "description": description,
-        "box_2d": [80, 80, 920, 920]
+        "box_2d": [60, 60, 940, 940]
     }
 
 def analyze_raw_item(image_path: Path, raw_caption: str) -> dict:
-    """Uses multimodal vision (gemini-2.5-flash) to extract metadata and target product bounding box."""
+    """Uses multimodal vision (Gemini) to extract metadata and target product bounding box."""
     api_key = load_gemini_api_key()
     
     if not api_key:
@@ -113,28 +113,32 @@ def analyze_raw_item(image_path: Path, raw_caption: str) -> dict:
             image_bytes = f.read()
 
         prompt = f"""
-        Analyze this supplier product image and caption: "{raw_caption}"
-        
-        Tasks:
-        1. Identify the EXACT target product being sold (ignore wooden stools, human hands, legs, or store background shelves).
-        2. Extract normalized bounding box coordinates for the PRODUCT ONLY: [ymin, xmin, ymax, xmax] on a 0-1000 scale.
-        3. Generate a clean commercial retail title, category, description, and price in Nigerian Naira (NGN integer).
-           - Note: If price is wholesale (e.g., 'per doz'), calculate a sensible 30% marked-up single unit retail price or bundle price.
-           - Clean numbers: '12k' -> 12000, '22k' -> 22000, '8500' -> 8500.
+        Analyze this Nigerian supplier product photo and raw caption: "{raw_caption}"
+
+        Instructions:
+        1. Target Product Only: Identify the exact kitchenware item being sold. Ignore human hands, feet, legs, wooden stools, tiled floors, market stalls, or background shelves.
+        2. Bounding Box: Extract normalized coordinates for the product only as [ymin, xmin, ymax, xmax] on a 0-1000 scale.
+        3. Commercial Retail Title: Generate a concise, appealing commercial retail title (e.g., '24-Piece Gold Cutlery Set with Stand', '16-Piece Ceramic Dinner Set').
+        4. Category: Map strictly to ONE of these 4 schema categories: 'pots-pans' | 'tableware' | 'utensils' | 'appliances'.
+           (Dinner sets, plates, bowls, cups, mugs, water bottles, tumblers, and trays map to 'tableware').
+        5. Price: Calculate a clean integer retail price in Nigerian Naira (NGN integer).
+           - '25k' -> 25000, '1800' -> 1800, '12k' -> 12000, '8500' -> 8500.
+           - If wholesale (e.g. '50k 55k per doz'), compute a single unit price with ~30% retail markup or a sensible single retail price (e.g. 5000 to 5500 each).
+        6. Description: Provide exactly a 2-sentence commercial description emphasizing material, durability, and kitchen care.
 
         Return ONLY a JSON object:
         {{
           "name": "Title",
-          "category": "pots-pans | tableware | utensils | appliances | baking | knives",
-          "price": 12000,
-          "description": "Short 2-sentence description",
+          "category": "tableware",
+          "price": 25000,
+          "description": "Crafted from durable food-safe materials...",
           "box_2d": [ymin, xmin, ymax, xmax]
         }}
         """
 
         response = None
-        # Try best supported multimodal models in order
-        for model_name in ["gemini-3.5-flash", "gemini-3.8-flash", "gemini-2.5-flash", "gemini-flash-latest"]:
+        # Cascade through available Gemini models
+        for model_name in ["gemini-3.5-flash", "gemini-3.5-flash-lite", "gemini-3.8-flash", "gemini-flash-latest"]:
             try:
                 response = client.models.generate_content(
                     model=model_name,
@@ -147,21 +151,35 @@ def analyze_raw_item(image_path: Path, raw_caption: str) -> dict:
                 if response and response.text:
                     break
             except Exception as model_err:
-                # If specific model is deprecated or busy, try next candidate
+                time.sleep(1)
                 continue
 
         if not response or not response.text:
-            raise RuntimeError("All Gemini model candidates failed to return response")
+            raise RuntimeError("Gemini models unavailable, falling back to heuristic")
 
         data = json.loads(response.text)
         if "box_2d" not in data or len(data["box_2d"]) != 4:
-            data["box_2d"] = [80, 80, 920, 920]
+            data["box_2d"] = [60, 60, 940, 940]
+
+        # Enforce valid schema category
+        valid_cats = ["pots-pans", "tableware", "utensils", "appliances"]
+        if data.get("category") not in valid_cats:
+            cat = str(data.get("category", "")).lower()
+            if "pot" in cat or "pan" in cat:
+                data["category"] = "pots-pans"
+            elif "knife" in cat or "utensil" in cat or "spoon" in cat:
+                data["category"] = "utensils"
+            elif "appliance" in cat or "cooker" in cat or "kettle" in cat:
+                data["category"] = "appliances"
+            else:
+                data["category"] = "tableware"
+
         return data
     except Exception as e:
         print(f"  [Gemini Notice] Vision API notice ({e}). Falling back to heuristic analyzer.")
         return fallback_heuristic_analyzer(image_path, raw_caption)
 
-def process_product(image_path: Path, raw_caption: str) -> dict:
+def process_product(image_path: Path, raw_caption: str, item_id: int) -> dict:
     metadata = analyze_raw_item(image_path, raw_caption)
     
     img = Image.open(image_path).convert("RGBA")
@@ -191,17 +209,20 @@ def process_product(image_path: Path, raw_caption: str) -> dict:
     pos_y = (800 - isolated.height) // 2
     canvas.paste(isolated, (pos_x, pos_y), mask=isolated)
     
-    # Save optimized WebP
+    # Save optimized WebP with clean unique slug
     raw_slug = metadata["name"].lower().replace(" ", "-")
-    clean_slug = re.sub(r'[^a-z0-9\-]', '', raw_slug).strip('-')[:30].strip('-')
+    clean_slug = re.sub(r'[^a-z0-9\-]', '', raw_slug).strip('-')[:35].strip('-')
     if not clean_slug:
-        clean_slug = f"item-{Path(image_path).stem}"
+        clean_slug = f"item-{item_id}"
+    else:
+        clean_slug = f"{clean_slug}-{item_id}"
         
     out_img_name = f"{clean_slug}.webp"
     out_path = OUT_DIR / out_img_name
     canvas.convert("RGB").save(out_path, "WEBP", quality=85)
     
     metadata["slug"] = clean_slug
+    metadata["itemId"] = item_id
     metadata["imageUrl"] = f"/images/products/{out_img_name}"
     print(f"  [OK] Processed studio image saved to: {out_path}")
     return metadata
@@ -227,20 +248,20 @@ def append_to_products_ts(product_records: list):
 
     for idx, p in enumerate(product_records):
         slug = p["slug"]
-        # Skip if slug already exists in products.ts
-        if f"slug: '{slug}'" in content or f'slug: "{slug}"' in content:
-            print(f"  [Skip] Product slug '{slug}' already present in src/data/products.ts")
+        prod_id = f"item-{p.get('itemId', idx+1)}"
+
+        # If slug or id already present, skip duplicate
+        if f"slug: '{slug}'" in content or f'id: \'{prod_id}\'' in content:
+            print(f"  [Skip] Product '{slug}' already present in src/data/products.ts")
             continue
 
-        prod_id = f"ingest-{slug}"
         cat_id = p.get("category", "tableware")
-        # Ensure valid category id
-        valid_cats = ["pots-pans", "knives", "utensils", "tableware", "baking", "appliances"]
+        valid_cats = ["pots-pans", "tableware", "utensils", "appliances"]
         if cat_id not in valid_cats:
             cat_id = "tableware"
 
         base_price = int(p.get("price", 15000))
-        name = p.get("name", "Artisan Cookware").replace("'", "\\'")
+        name = p.get("name", "Artisan Kitchenware").replace("'", "\\'")
         desc = p.get("description", "").replace("'", "\\'")
         img_url = p["imageUrl"]
 
@@ -254,8 +275,8 @@ def append_to_products_ts(product_records: list):
     basePrice: {base_price},
     isFeatured: false,
     isBestSeller: false,
-    rating: 4.8,
-    ratingCount: 16,
+    rating: 4.9,
+    ratingCount: 18,
     variants: [
       {{ id: 'var-{slug}-1', name: 'Standard Studio', colorHex: '#FAF7F2' }},
     ],
@@ -283,7 +304,7 @@ def append_to_products_ts(product_records: list):
 
 def main():
     print("=================================================================")
-    print("  JIREL HITCHEN HUB - INVENTORY INGESTION ENGINE")
+    print("  JIREL HITCHEN HUB - 20 RAW INVENTORY INGESTION ENGINE")
     print("=================================================================")
     
     inventory_file = RAW_DIR / "inventory.json"
@@ -297,7 +318,8 @@ def main():
     print(f"Found {len(items)} items in {inventory_file} to process...\n")
     processed_products = []
 
-    for item in items:
+    for idx, item in enumerate(items):
+        item_id = item.get("id", idx + 1)
         file_name = item.get("file")
         caption = item.get("caption", "")
         img_path = RAW_DIR / file_name
@@ -306,9 +328,10 @@ def main():
             print(f"[Warning] Image file not found: {img_path}. Skipping.")
             continue
 
-        print(f"--> Processing: {file_name} ('{caption}')")
+        print(f"--> [{idx+1}/{len(items)}] Processing Item #{item_id}: {file_name}")
+        print(f"    Raw Caption: '{caption}'")
         try:
-            prod_meta = process_product(img_path, caption)
+            prod_meta = process_product(img_path, caption, item_id)
             processed_products.append(prod_meta)
             print(f"    Retail Name: {prod_meta['name']}")
             print(f"    Category:    {prod_meta['category']}")
@@ -317,12 +340,17 @@ def main():
         except Exception as e:
             print(f"[Error] Failed processing {file_name}: {e}\n")
 
+        # 4-second delay between items to stay well within Gemini free tier limits
+        if idx < len(items) - 1:
+            print("    [Rate Limit Guard] Pausing 4 seconds for AI Studio free tier...")
+            time.sleep(4)
+
     if processed_products:
-        print("Synchronizing catalog data...")
+        print("Synchronizing catalog data to src/data/products.ts...")
         append_to_products_ts(processed_products)
 
     print("\n=================================================================")
-    print("  INGESTION BATCH COMPLETE")
+    print(f"  INGESTION COMPLETE: {len(processed_products)} ITEMS PROCESSED")
     print("=================================================================")
 
 if __name__ == "__main__":
