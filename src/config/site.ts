@@ -1,5 +1,5 @@
 /**
- * Jirel Hitchen Hub - Centralized Storefront & Business Configuration
+ * Jirel Kitchen Hub - Centralized Storefront & Business Configuration
  * 
  * Single source of truth for storefront metadata, customer concierge channels,
  * fulfillment logistics, delivery rates, and payment gateway keys.
@@ -45,8 +45,8 @@ export interface SiteConfig {
 }
 
 export const siteConfig: SiteConfig = {
-  name: 'Jirel Hitchen Hub',
-  shortName: 'Jirel Hitchen Hub',
+  name: 'Jirel Kitchen Hub',
+  shortName: 'Jirel Kitchen Hub',
   description:
     'Premium culinary cookware, precision knives, and handcrafted kitchenware delivered across Nigeria.',
   url: process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000',
@@ -59,7 +59,7 @@ export const siteConfig: SiteConfig = {
   contact: {
     whatsappNumber: process.env.NEXT_PUBLIC_WHATSAPP_PHONE || '2349167053972',
     defaultWhatsAppMessage:
-      'Hi Jirel Hitchen Hub, I have an inquiry regarding your cookware collection.',
+      'Hi Jirel Kitchen Hub, I have an inquiry regarding your cookware collection.',
     supportEmail:
       process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'support@jirelkitchen.com',
     location: 'Victoria Island, Lagos, Nigeria',
@@ -97,6 +97,6 @@ export function getWhatsAppUrl(customMessage?: string): string {
  * Generates an inquiry WhatsApp link pre-filled with an order reference.
  */
 export function getOrderWhatsAppUrl(reference: string): string {
-  const message = `Hi Jirel Hitchen Hub, I'm inquiring about my order ${reference}.`;
+  const message = `Hi Jirel Kitchen Hub, I'm inquiring about my order ${reference}.`;
   return getWhatsAppUrl(message);
 }

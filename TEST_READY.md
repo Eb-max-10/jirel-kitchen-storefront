@@ -1,4 +1,4 @@
-# TEST_READY — Jirel Hitchen Hub E2E Automated Test Suite
+# TEST_READY — Jirel Kitchen Hub E2E Automated Test Suite
 
 ## Test Execution Command
 Run the complete automated test suite across all 4 Tiers:

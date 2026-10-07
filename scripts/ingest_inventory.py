@@ -304,7 +304,7 @@ def append_to_products_ts(product_records: list):
 
 def main():
     print("=================================================================")
-    print("  JIREL HITCHEN HUB - 20 RAW INVENTORY INGESTION ENGINE")
+    print("  JIREL KITCHEN HUB - 20 RAW INVENTORY INGESTION ENGINE")
     print("=================================================================")
     
     inventory_file = RAW_DIR / "inventory.json"
