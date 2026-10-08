@@ -4,8 +4,8 @@ import re
 import time
 import json
 from pathlib import Path
-from PIL import Image
-from rembg import remove
+from PIL import Image, ImageDraw, ImageFilter
+from rembg import new_session, remove
 
 # Configure robust console encoding on Windows
 if hasattr(sys.stdout, "reconfigure"):
@@ -17,9 +17,39 @@ if hasattr(sys.stdout, "reconfigure"):
 # Setup Directories
 RAW_DIR = Path("raw-inventory")
 OUT_DIR = Path("public/images/products")
+BG_DIR = Path("public/images/backgrounds")
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 
-CANVAS_COLOR = (250, 247, 242, 255)  # Brand #FAF7F2
+# Curated Backdrops
+BACKDROPS = {
+    "marble": BG_DIR / "countertop-marble.jpg",
+    "wood": BG_DIR / "countertop-wood.jpg",
+    "ceramic": BG_DIR / "table-ceramic.jpg",
+}
+
+# Known slug mapping from src/data/products.ts to ensure 100% storefront continuity
+EXISTING_SLUGS = {
+    1: "16-piece-matte-ceramic-dinnerware-s-1",
+    2: "stainless-steel-vacuum-insulated-th-2",
+    3: "ceramic-dish-and-serving-tray-set-3",
+    4: "set-of-3-nested-wooden-serving-tray-4",
+    5: "16-piece-modern-grey-dinnerware-set-5",
+    6: "32-piece-luxury-gold-tree-ceramic-d-6",
+    7: "luxury-ceramic-serving-bowl-with-go-7",
+    8: "1200ml-stainless-steel-insulated-tr-8",
+    9: "stainless-steel-office-insulated-mu-9",
+    10: "24-piece-gold-stainless-steel-flatw-10",
+    11: "portable-glass-coffee-mug-with-prot-11",
+    12: "luxury-white-ceramic-dinner-plate-w-12",
+    13: "ornate-gold-rimmed-porcelain-dinner-13",
+    14: "gold-rimmed-white-ceramic-dinner-an-14",
+    15: "2-piece-clear-glass-mug-tumbler-set-15",
+    16: "g-horse-6-piece-clear-embossed-glas-16",
+    17: "3-piece-glitter-tumbler-set-with-ra-17",
+    18: "gradient-frosted-motivational-sport-18",
+    19: "stainless-steel-thermal-vacuum-trav-19",
+    20: "12-piece-blooming-glass-coffee-cup-20",
+}
 
 def load_gemini_api_key():
     """Finds GEMINI_API_KEY from environment or .env/.env.local files."""
@@ -41,68 +71,66 @@ def load_gemini_api_key():
                 pass
     return None
 
-def fallback_heuristic_analyzer(image_path: Path, raw_caption: str) -> dict:
+def select_backdrop_path(name: str, category: str, caption: str) -> Path:
     """
-    Intelligent fallback parser for supplier captions when GEMINI_API_KEY is not configured
-    or when API is temporarily unavailable.
+    Selects the photorealistic contextual kitchen studio backdrop based on product type:
+    - Utensils / cutting boards / wooden trays / flatware -> Warm wooden butcher block
+    - Pots & pans / appliances / stainless steel thermal bottles -> Carrara marble countertop
+    - Dinnerware / plates / cups / saucers / glassware -> Neutral linen dining table
     """
-    caption_lower = raw_caption.lower()
+    text = f"{name} {caption}".lower()
     
-    # 1. Price extraction
-    price = 15000
-    k_match = re.search(r'(\d+(?:\.\d+)?)\s*k\b', caption_lower)
-    if k_match:
-        price = int(float(k_match.group(1)) * 1000)
-    else:
-        num_match = re.search(r'\b(\d{3,6})\b', caption_lower)
-        if num_match:
-            price = int(num_match.group(1))
-
-    # 2. Category mapping (strict schema: pots-pans, tableware, utensils, appliances)
-    category = "tableware"
-    if any(w in caption_lower for w in ["pot", "pan", "skillet", "cookware", "casserole", "baking", "sheet", "tray", "dish"]) and "wooden tray" not in caption_lower:
-        if any(w in caption_lower for w in ["pot", "pan", "skillet", "cookware"]):
-            category = "pots-pans"
-        elif any(w in caption_lower for w in ["dish", "tray"]):
-            category = "tableware"
-    elif any(w in caption_lower for w in ["knife", "knives", "cleaver", "blade", "spoon", "spatula", "whisk", "utensil", "tongs"]):
-        category = "utensils"
-    elif any(w in caption_lower for w in ["blender", "kettle", "cooker", "appliance", "fryer"]):
-        category = "appliances"
-    elif any(w in caption_lower for w in ["plate", "bowl", "cup", "saucer", "dinner", "tea", "tumbler", "bottle", "mug", "tableware", "tray", "flatware", "cutlery"]):
-        category = "tableware"
-
-    # 3. Clean retail title
-    cleaned_caption = re.sub(r'\b\d+(?:\.\d+)?k\b', '', raw_caption, flags=re.IGNORECASE)
-    cleaned_caption = re.sub(r'\b\d{3,6}\b', '', cleaned_caption)
-    cleaned_caption = re.sub(r'DZ\d+\s*\d*', '', cleaned_caption, flags=re.IGNORECASE)
-    cleaned_caption = re.sub(r'\s+', ' ', cleaned_caption).strip(' -:')
+    # 1. Wooden items, cutting boards, trays, cutlery / flatware -> wood countertop
+    if any(k in text for k in ["wood", "wooden", "tray", "flatware", "cutlery", "spoon", "knife", "utensil", "board"]):
+        return BACKDROPS["wood"]
     
-    words = [w.capitalize() for w in cleaned_caption.split() if w]
-    name = " ".join(words) if words else f"Kitchenware Item {image_path.stem}"
-    if len(name) < 4:
-        name = f"Artisan Tableware {image_path.stem}"
+    # 2. Pots & pans, appliances, thermal stainless steel flasks / bottles / tumblers -> marble countertop
+    if category in ["pots-pans", "appliances"] or any(k in text for k in ["pot", "pan", "cookware", "kettle", "appliance", "flask", "tumbler", "bottle", "thermal", "insulated"]):
+        return BACKDROPS["marble"]
+    
+    # 3. Dinnerware, plates, bowls, cups, mugs, glassware -> ceramic linen dining table
+    return BACKDROPS["ceramic"]
 
-    description = (
-        f"Crafted from premium food-grade materials for enduring durability and daily elegance. "
-        f"Hand wash with mild soap and dry with a soft cloth to preserve its pristine surface finish."
-    )
+def generate_grounding_shadows(prod_width: int, prod_height: int, pos_x: int, base_y: int) -> Image.Image:
+    """
+    Generates realistic multi-stage dual-layer contact and ambient grounding shadows:
+    - Layer 1 (Ambient): Wide, diffuse, soft oval shadow spreading gently beneath the item
+    - Layer 2 (Contact): Dense, tight, dark oval shadow hugging the immediate base contact seam
+    """
+    shadow_canvas = Image.new("RGBA", (800, 800), (0, 0, 0, 0))
+    
+    # 1. Ambient shadow (diffuse & soft)
+    ambient_w = max(50, int(prod_width * 0.95))
+    ambient_h = max(24, int(prod_width * 0.16))
+    amb_img = Image.new("RGBA", (ambient_w + 80, ambient_h + 80), (0, 0, 0, 0))
+    amb_draw = ImageDraw.Draw(amb_img)
+    amb_draw.ellipse([40, 40, 40 + ambient_w, 40 + ambient_h], fill=(20, 18, 15, 85))
+    amb_blurred = amb_img.filter(ImageFilter.GaussianBlur(radius=18))
+    
+    amb_px = int(pos_x + (prod_width / 2) - (amb_img.width / 2))
+    amb_py = int(base_y - 22)
+    shadow_canvas.paste(amb_blurred, (amb_px, amb_py), mask=amb_blurred)
+    
+    # 2. Contact shadow (dense & dark right at grounding plane)
+    contact_w = max(40, int(prod_width * 0.82))
+    contact_h = max(10, int(prod_width * 0.07))
+    con_img = Image.new("RGBA", (contact_w + 40, contact_h + 40), (0, 0, 0, 0))
+    con_draw = ImageDraw.Draw(con_img)
+    con_draw.ellipse([20, 20, 20 + contact_w, 20 + contact_h], fill=(10, 8, 8, 180))
+    con_blurred = con_img.filter(ImageFilter.GaussianBlur(radius=5))
+    
+    con_px = int(pos_x + (prod_width / 2) - (con_img.width / 2))
+    con_py = int(base_y - (con_img.height / 2) + 2)
+    shadow_canvas.paste(con_blurred, (con_px, con_py), mask=con_blurred)
+    
+    return shadow_canvas
 
-    return {
-        "name": name,
-        "category": category,
-        "price": price,
-        "description": description,
-        "box_2d": [60, 60, 940, 940]
-    }
-
-def analyze_raw_item(image_path: Path, raw_caption: str) -> dict:
-    """Uses multimodal vision (Gemini) to extract metadata and target product bounding box."""
+def analyze_raw_item_with_gemini(image_path: Path, raw_caption: str) -> dict:
+    """Uses Gemini Vision to identify the target product bounding box ignoring background noise."""
     api_key = load_gemini_api_key()
-    
     if not api_key:
-        print(f"  [Notice] GEMINI_API_KEY not found in env. Using intelligent heuristic analyzer.")
-        return fallback_heuristic_analyzer(image_path, raw_caption)
+        print(f"  [Notice] GEMINI_API_KEY not found in env. Using heuristic box.")
+        return {"box_2d": [50, 50, 950, 950]}
 
     try:
         from google import genai
@@ -113,32 +141,22 @@ def analyze_raw_item(image_path: Path, raw_caption: str) -> dict:
             image_bytes = f.read()
 
         prompt = f"""
-        Analyze this Nigerian supplier product photo and raw caption: "{raw_caption}"
+        Analyze this supplier product photo and caption: "{raw_caption}"
 
-        Instructions:
-        1. Target Product Only: Identify the exact kitchenware item being sold. Ignore human hands, feet, legs, wooden stools, tiled floors, market stalls, or background shelves.
-        2. Bounding Box: Extract normalized coordinates for the product only as [ymin, xmin, ymax, xmax] on a 0-1000 scale.
-        3. Commercial Retail Title: Generate a concise, appealing commercial retail title (e.g., '24-Piece Gold Cutlery Set with Stand', '16-Piece Ceramic Dinner Set').
-        4. Category: Map strictly to ONE of these 4 schema categories: 'pots-pans' | 'tableware' | 'utensils' | 'appliances'.
-           (Dinner sets, plates, bowls, cups, mugs, water bottles, tumblers, and trays map to 'tableware').
-        5. Price: Calculate a clean integer retail price in Nigerian Naira (NGN integer).
-           - '25k' -> 25000, '1800' -> 1800, '12k' -> 12000, '8500' -> 8500.
-           - If wholesale (e.g. '50k 55k per doz'), compute a single unit price with ~30% retail markup or a sensible single retail price (e.g. 5000 to 5500 each).
-        6. Description: Provide exactly a 2-sentence commercial description emphasizing material, durability, and kitchen care.
+        Task:
+        1. Identify the EXACT target kitchenware product being sold.
+        2. Strictly IGNORE wooden stools, human fingers, hands, legs, floor tiles, market stalls, stands, and background shelves.
+        3. Extract normalized bounding box coordinates for the PRODUCT ONLY: [ymin, xmin, ymax, xmax] on a 0-1000 scale.
+           The ymax coordinate must be the true bottom edge of the kitchenware product itself.
 
         Return ONLY a JSON object:
         {{
-          "name": "Title",
-          "category": "tableware",
-          "price": 25000,
-          "description": "Crafted from durable food-safe materials...",
           "box_2d": [ymin, xmin, ymax, xmax]
         }}
         """
 
         response = None
-        # Cascade through available Gemini models
-        for model_name in ["gemini-3.5-flash", "gemini-3.5-flash-lite", "gemini-3.8-flash", "gemini-flash-latest"]:
+        for model_name in ["gemini-2.5-flash", "gemini-3.5-flash", "gemini-3.5-flash-lite", "gemini-flash-latest"]:
             try:
                 response = client.models.generate_content(
                     model=model_name,
@@ -150,173 +168,116 @@ def analyze_raw_item(image_path: Path, raw_caption: str) -> dict:
                 )
                 if response and response.text:
                     break
-            except Exception as model_err:
+            except Exception:
                 time.sleep(1)
                 continue
 
         if not response or not response.text:
-            raise RuntimeError("Gemini models unavailable, falling back to heuristic")
+            return {"box_2d": [50, 50, 950, 950]}
 
         data = json.loads(response.text)
-        if "box_2d" not in data or len(data["box_2d"]) != 4:
-            data["box_2d"] = [60, 60, 940, 940]
+        if isinstance(data, list) and len(data) > 0:
+            data = data[0]
 
-        # Enforce valid schema category
-        valid_cats = ["pots-pans", "tableware", "utensils", "appliances"]
-        if data.get("category") not in valid_cats:
-            cat = str(data.get("category", "")).lower()
-            if "pot" in cat or "pan" in cat:
-                data["category"] = "pots-pans"
-            elif "knife" in cat or "utensil" in cat or "spoon" in cat:
-                data["category"] = "utensils"
-            elif "appliance" in cat or "cooker" in cat or "kettle" in cat:
-                data["category"] = "appliances"
-            else:
-                data["category"] = "tableware"
+        if "box_2d" not in data or len(data["box_2d"]) != 4:
+            data["box_2d"] = [50, 50, 950, 950]
 
         return data
     except Exception as e:
-        print(f"  [Gemini Notice] Vision API notice ({e}). Falling back to heuristic analyzer.")
-        return fallback_heuristic_analyzer(image_path, raw_caption)
+        print(f"  [Vision Notice] Gemini detection notice: {e}. Using safe bounds.")
+        return {"box_2d": [50, 50, 950, 950]}
 
-def process_product(image_path: Path, raw_caption: str, item_id: int) -> dict:
-    metadata = analyze_raw_item(image_path, raw_caption)
+def process_product_grounded(image_path: Path, raw_caption: str, item_id: int, session) -> str:
+    """
+    Executes the upgraded grounding pipeline:
+    1. Gemini Vision bounding box pre-crop.
+    2. ISNet general-use edge segmentation.
+    3. Tight alpha bounding crop.
+    4. Proportional scaling to 68-72% frame with natural tabletop grounding.
+    5. Photorealistic dual-stage grounding contact & ambient shadows.
+    6. Contextual studio backdrop composite.
+    """
+    print(f"  [1/5] Detecting product boundary with Gemini Vision...")
+    vision_meta = analyze_raw_item_with_gemini(image_path, raw_caption)
+    ymin, xmin, ymax, xmax = vision_meta.get("box_2d", [50, 50, 950, 950])
     
-    img = Image.open(image_path).convert("RGBA")
-    w, h = img.size
-    ymin, xmin, ymax, xmax = metadata["box_2d"]
-    
-    # 1. Expand crop slightly (5% margin) to prevent clipping product edges
-    pad_y = int((ymax - ymin) * 0.05)
-    pad_x = int((xmax - xmin) * 0.05)
-    
+    # Pre-crop strictly with 4% padding margin
+    raw_img = Image.open(image_path).convert("RGBA")
+    w, h = raw_img.size
+    pad_y = int((ymax - ymin) * 0.04)
+    pad_x = int((xmax - xmin) * 0.04)
     crop_box = (
         max(0, int((xmin - pad_x) * w / 1000)),
         max(0, int((ymin - pad_y) * h / 1000)),
         min(w, int((xmax + pad_x) * w / 1000)),
         min(h, int((ymax + pad_y) * h / 1000)),
     )
-    cropped_target = img.crop(crop_box)
+    cropped_target = raw_img.crop(crop_box)
     
-    # 2. Segment cropped target
-    isolated = remove(cropped_target)
+    print(f"  [2/5] Segmenting product with ISNet-General-Use...")
+    isolated = remove(cropped_target, session=session)
     
-    # 3. Composite onto brand #FAF7F2 canvas (800x800)
-    canvas = Image.new("RGBA", (800, 800), CANVAS_COLOR)
-    isolated.thumbnail((680, 680), Image.Resampling.LANCZOS)
-    
-    pos_x = (800 - isolated.width) // 2
-    pos_y = (800 - isolated.height) // 2
-    canvas.paste(isolated, (pos_x, pos_y), mask=isolated)
-    
-    # Save optimized WebP with clean unique slug
-    raw_slug = metadata["name"].lower().replace(" ", "-")
-    clean_slug = re.sub(r'[^a-z0-9\-]', '', raw_slug).strip('-')[:35].strip('-')
-    if not clean_slug:
-        clean_slug = f"item-{item_id}"
-    else:
-        clean_slug = f"{clean_slug}-{item_id}"
+    # Crop to non-empty alpha bbox
+    bbox = isolated.getbbox()
+    if bbox:
+        isolated = isolated.crop(bbox)
         
-    out_img_name = f"{clean_slug}.webp"
-    out_path = OUT_DIR / out_img_name
-    canvas.convert("RGB").save(out_path, "WEBP", quality=85)
+    # Scale to 68-72% of 800x800 frame (~540px max dimension, max height 575px)
+    iw, ih = isolated.size
+    max_target = 540
+    scale = max_target / max(iw, ih)
+    if int(ih * scale) > 575:
+        scale = 575 / ih
+        
+    new_w = max(10, int(iw * scale))
+    new_h = max(10, int(ih * scale))
+    scaled_prod = isolated.resize((new_w, new_h), Image.Resampling.LANCZOS)
     
-    metadata["slug"] = clean_slug
-    metadata["itemId"] = item_id
-    metadata["imageUrl"] = f"/images/products/{out_img_name}"
-    print(f"  [OK] Processed studio image saved to: {out_path}")
-    return metadata
-
-def append_to_products_ts(product_records: list):
-    """Programmatically updates src/data/products.ts with new ingested catalog items."""
-    products_file = Path("src/data/products.ts")
-    if not products_file.exists():
-        print("  [Error] src/data/products.ts does not exist!")
-        return
-
-    content = products_file.read_text(encoding="utf-8")
-
-    # Match the products array end bracket `];`
-    pattern = re.compile(r'(\nexport const products:\s*Product\[\]\s*=\s*\[)(.*?)(\n\];)', re.DOTALL)
-    match = pattern.search(content)
-    if not match:
-        print("  [Error] Could not locate 'export const products: Product[] = [...];' in products.ts")
-        return
-
-    existing_array_body = match.group(2)
-    new_entries = []
-
-    for idx, p in enumerate(product_records):
-        slug = p["slug"]
-        prod_id = f"item-{p.get('itemId', idx+1)}"
-
-        # If slug or id already present, skip duplicate
-        if f"slug: '{slug}'" in content or f'id: \'{prod_id}\'' in content:
-            print(f"  [Skip] Product '{slug}' already present in src/data/products.ts")
-            continue
-
-        cat_id = p.get("category", "tableware")
-        valid_cats = ["pots-pans", "tableware", "utensils", "appliances"]
-        if cat_id not in valid_cats:
-            cat_id = "tableware"
-
-        base_price = int(p.get("price", 15000))
-        name = p.get("name", "Artisan Kitchenware").replace("'", "\\'")
-        desc = p.get("description", "").replace("'", "\\'")
-        img_url = p["imageUrl"]
-
-        entry_ts = f"""  {{
-    id: '{prod_id}',
-    name: '{name}',
-    slug: '{slug}',
-    description:
-      '{desc}',
-    categoryId: '{cat_id}',
-    basePrice: {base_price},
-    isFeatured: false,
-    isBestSeller: false,
-    rating: 4.9,
-    ratingCount: 18,
-    variants: [
-      {{ id: 'var-{slug}-1', name: 'Standard Studio', colorHex: '#FAF7F2' }},
-    ],
-    images: [
-      {{
-        id: 'img-{slug}-1',
-        variantId: 'var-{slug}-1',
-        url: '{img_url}',
-        alt: '{name} presented on brand studio background',
-        isPrimary: true,
-      }},
-    ],
-  }},"""
-        new_entries.append(entry_ts)
-
-    if not new_entries:
-        print("  [Catalog] No new products to append (all already present).")
-        return
-
-    # Splice new entries into the products array
-    updated_body = existing_array_body.rstrip() + "\n" + "\n".join(new_entries) + "\n"
-    new_content = content[:match.start(2)] + updated_body + content[match.end(2):]
-    products_file.write_text(new_content, encoding="utf-8")
-    print(f"  [OK] Successfully appended {len(new_entries)} new products to src/data/products.ts")
+    # Ground resting line on studio tabletop surface
+    base_y = 675
+    pos_x = (800 - new_w) // 2
+    pos_y = base_y - new_h
+    
+    print(f"  [3/5] Generating multi-stage realistic contact & ambient shadows...")
+    shadow_layer = generate_grounding_shadows(new_w, new_h, pos_x, base_y)
+    
+    # Determine contextual studio backdrop
+    backdrop_path = select_backdrop_path(raw_caption, "tableware", raw_caption)
+    print(f"  [4/5] Compositing onto studio backdrop: {backdrop_path.name}...")
+    bg_img = Image.open(backdrop_path).convert("RGBA")
+    
+    # Composite: Background -> Shadow -> Product
+    final_canvas = bg_img.copy()
+    final_canvas.paste(shadow_layer, (0, 0), mask=shadow_layer)
+    final_canvas.paste(scaled_prod, (pos_x, pos_y), mask=scaled_prod)
+    
+    # Save optimized WebP
+    slug = EXISTING_SLUGS.get(item_id, f"item-{item_id}")
+    out_filename = f"{slug}.webp"
+    out_path = OUT_DIR / out_filename
+    final_canvas.convert("RGB").save(out_path, "WEBP", quality=90)
+    print(f"  [5/5] [OK] Saved retail-grounded asset: {out_path}\n")
+    return out_filename
 
 def main():
     print("=================================================================")
-    print("  JIREL KITCHEN HUB - 20 RAW INVENTORY INGESTION ENGINE")
+    print("  JIREL KITCHEN HUB - GROUNDED CONTEXTUAL STUDIO INGESTION ENGINE")
     print("=================================================================")
     
     inventory_file = RAW_DIR / "inventory.json"
     if not inventory_file.exists():
-        print(f"[Error] Inventory input file not found: {inventory_file}")
+        print(f"[Error] Inventory file {inventory_file} not found!")
         return
 
     with open(inventory_file, "r", encoding="utf-8") as f:
         items = json.load(f)
 
-    print(f"Found {len(items)} items in {inventory_file} to process...\n")
-    processed_products = []
+    print(f"Loading SOTA ISNet segmentation session...")
+    isnet_session = new_session("isnet-general-use")
+    print("ISNet session ready.\n")
+
+    print(f"Processing {len(items)} catalog products with realistic depth & backdrops...\n")
+    processed_count = 0
 
     for idx, item in enumerate(items):
         item_id = item.get("id", idx + 1)
@@ -331,26 +292,18 @@ def main():
         print(f"--> [{idx+1}/{len(items)}] Processing Item #{item_id}: {file_name}")
         print(f"    Raw Caption: '{caption}'")
         try:
-            prod_meta = process_product(img_path, caption, item_id)
-            processed_products.append(prod_meta)
-            print(f"    Retail Name: {prod_meta['name']}")
-            print(f"    Category:    {prod_meta['category']}")
-            print(f"    Price (NGN): NGN {prod_meta['price']:,}")
-            print(f"    Asset:       {prod_meta['imageUrl']}\n")
+            out_file = process_product_grounded(img_path, caption, item_id, isnet_session)
+            processed_count += 1
         except Exception as e:
-            print(f"[Error] Failed processing {file_name}: {e}\n")
+            print(f"  [Error] Failed processing Item #{item_id} ({file_name}): {e}\n")
 
-        # 4-second delay between items to stay well within Gemini free tier limits
+        # 4-second delay between items for AI Studio free-tier rate limits
         if idx < len(items) - 1:
             print("    [Rate Limit Guard] Pausing 4 seconds for AI Studio free tier...")
             time.sleep(4)
 
-    if processed_products:
-        print("Synchronizing catalog data to src/data/products.ts...")
-        append_to_products_ts(processed_products)
-
-    print("\n=================================================================")
-    print(f"  INGESTION COMPLETE: {len(processed_products)} ITEMS PROCESSED")
+    print("=================================================================")
+    print(f"  GROUNDED INGESTION COMPLETE: {processed_count}/{len(items)} ASSETS RENDERED")
     print("=================================================================")
 
 if __name__ == "__main__":
