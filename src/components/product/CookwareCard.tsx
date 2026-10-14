@@ -40,13 +40,6 @@ export default function CookwareCard({ product }: { product: Product }) {
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
     >
-      {/* Sale Ribbon */}
-      {product.salePrice && (
-        <div className="absolute top-3 right-3 z-10 bg-sale-red text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1 rotate-12 rounded-sm shadow-sm">
-          Sale
-        </div>
-      )}
-
       {/* Image Container */}
       <div className="relative aspect-square overflow-hidden bg-[#F5F2EB]">
         <Link href={`/products/${product.slug}`} className="block w-full h-full">
@@ -94,27 +87,16 @@ export default function CookwareCard({ product }: { product: Product }) {
       {/* Product Info */}
       <div className="p-4">
         <Link href={`/products/${product.slug}`} className="block group/title">
-          <h3 className="font-medium text-charcoal text-sm leading-tight group-hover/title:text-sage transition-colors">
+          <h3 className="font-medium text-charcoal text-sm leading-tight group-hover/title:text-sage transition-colors line-clamp-2">
             {product.name}
           </h3>
         </Link>
 
         {/* Price */}
-        <div className="flex items-center gap-2 mt-1.5">
-          {product.salePrice ? (
-            <>
-              <span className="text-sale-red font-semibold text-sm">
-                {formatPrice(product.salePrice)}
-              </span>
-              <span className="text-warm-gray text-xs line-through">
-                {formatPrice(product.basePrice)}
-              </span>
-            </>
-          ) : (
-            <span className="font-semibold text-sm">
-              {formatPrice(product.basePrice)}
-            </span>
-          )}
+        <div className="flex items-center gap-2 mt-2">
+          <span className="font-semibold text-sm text-charcoal">
+            {formatPrice(product.basePrice)}
+          </span>
         </div>
 
         {/* Variant Swatches */}

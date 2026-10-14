@@ -28,52 +28,63 @@ interface SlideData {
 const SLIDES: SlideData[] = [
   {
     id: 1,
-    tag: "DEAL OF THE DAY",
-    title: "The Always Pan",
+    tag: "ARTISAN DINING",
+    title: "16-Piece Matte Ceramic Dinnerware Set",
     subtitle:
-      "Replaces 8 pieces of traditional cookware. Non-toxic, ceramic-coated, and engineered for high-heat Nigerian cooking.",
-    priceBadge: "Special Offer: ₦38,000",
-    originalPrice: "₦45,000",
-    ctaText: "Claim Deal",
+      "Crafted from premium durable ceramic with contemporary ribbed contours. Microwave and dishwasher safe, engineered for daily dining and effortless entertaining.",
+    priceBadge: "₦55,000",
+    originalPrice: null,
+    ctaText: "Order Now",
     ctaType: "cart",
+    link: "/products/16-piece-matte-ceramic-dinnerware-s-1",
     productPayload: {
-      productId: "prod-1",
-      name: "The Always Pan",
-      variantName: "Sage Green",
-      image:
-        "https://images.unsplash.com/photo-1590794056226-79ef3a8147e1?w=800&auto=format&fit=crop&q=80",
-      price: 38000,
+      productId: "item-1",
+      name: "16-Piece Matte Ceramic Dinnerware Set",
+      variantName: "Standard Studio",
+      image: "/images/products/16-piece-matte-ceramic-dinnerware-s-1.webp",
+      price: 55000,
     },
-    bgImage:
-      "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?w=1600&auto=format&fit=crop&q=80",
+    bgImage: "/images/products/16-piece-matte-ceramic-dinnerware-s-1.webp",
   },
   {
     id: 2,
-    tag: "PRO CHEF SERIES",
-    title: "Hand-Forged Japanese Steel",
+    tag: "ELEGANT ENTERTAINING",
+    title: "24-Piece Gold Cutlery Set with Stand",
     subtitle:
-      "Razor-sharp 5-piece chef knife sets built for precision prep, balanced ergonomics, and lifetime edge retention.",
-    priceBadge: "Starting at ₦22,000",
+      "Mirror-polished gold stainless steel flatware service complete with a transparent display organizer. Rust-resistant, balanced ergonomics, and tarnish-free.",
+    priceBadge: "₦25,000",
     originalPrice: null,
-    ctaText: "Explore Knives",
-    ctaType: "link",
-    link: "#best-sellers",
-    bgImage:
-      "https://images.unsplash.com/photo-1556912172-45b7abe8b7e1?w=1600&auto=format&fit=crop&q=80",
+    ctaText: "Order Now",
+    ctaType: "cart",
+    link: "/products/24-piece-gold-stainless-steel-flatw-10",
+    productPayload: {
+      productId: "item-10",
+      name: "24-Piece Gold Stainless Steel Flatware Tableware Set",
+      variantName: "Standard Studio",
+      image: "/images/products/24-piece-gold-stainless-steel-flatw-10.webp",
+      price: 25000,
+    },
+    bgImage: "/images/products/24-piece-gold-stainless-steel-flatw-10.webp",
   },
   {
     id: 3,
-    tag: "LIMITED RUN",
-    title: "Heirloom Cast Iron",
+    tag: "SIGNATURE BANQUET COLLECTION",
+    title: "32-Piece Luxury Gold Tree Ceramic Set",
     subtitle:
-      "Triple-seasoned organic skillet collection. Maximum heat retention, oven-safe, and crafted to outlast generations.",
-    priceBadge: "Free Delivery Nationwide",
+      "Complete banquet dining service featuring intricate gold detailing and kiln-fired porcelain craftsmanship for celebrations and special family gatherings.",
+    priceBadge: "₦65,000",
     originalPrice: null,
-    ctaText: "Shop Collection",
-    ctaType: "link",
-    link: "#best-sellers",
-    bgImage:
-      "https://images.unsplash.com/photo-1544025162-d76694265947?w=1600&auto=format&fit=crop&q=80",
+    ctaText: "Order Now",
+    ctaType: "cart",
+    link: "/products/32-piece-luxury-gold-tree-ceramic-d-6",
+    productPayload: {
+      productId: "item-6",
+      name: "32-Piece Luxury Gold Tree Ceramic Dinner Set",
+      variantName: "Standard Studio",
+      image: "/images/products/32-piece-luxury-gold-tree-ceramic-d-6.webp",
+      price: 65000,
+    },
+    bgImage: "/images/products/32-piece-luxury-gold-tree-ceramic-d-6.webp",
   },
 ];
 
@@ -154,6 +165,11 @@ export default function HeroSection() {
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.5, ease: "easeOut" }}
             >
+              {/* Category / Collection Tag */}
+              <div className="mb-3 sm:mb-4 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3.5 py-1 text-xs font-semibold tracking-wider text-white backdrop-blur-md">
+                {activeSlide.tag}
+              </div>
+
               {/* Title */}
               <h1 className="font-heading text-3xl xs:text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl leading-[1.15] sm:leading-[1.1]">
                 {activeSlide.title}
@@ -176,24 +192,24 @@ export default function HeroSection() {
                 )}
               </div>
 
-              {/* Action Button */}
-              <div className="mt-8 flex items-center gap-4">
+              {/* Action Buttons */}
+              <div className="mt-8 flex flex-wrap items-center gap-4">
                 <button
                   onClick={handleCtaClick}
                   className="group flex items-center gap-2.5 rounded-lg bg-white px-7 py-3.5 text-sm font-semibold text-neutral-900 shadow-xl transition-all duration-200 hover:bg-[#FAF7F2] hover:shadow-2xl active:scale-95 cursor-pointer"
                 >
-                  {activeSlide.ctaType === "cart" ? (
-                    <>
-                      <ShoppingBag className="h-4 w-4 transition-transform group-hover:-translate-y-0.5" />
-                      {activeSlide.ctaText}
-                    </>
-                  ) : (
-                    <>
-                      {activeSlide.ctaText}
-                      <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                    </>
-                  )}
+                  <ShoppingBag className="h-4 w-4 transition-transform group-hover:-translate-y-0.5" />
+                  {activeSlide.ctaText}
                 </button>
+                {activeSlide.link && (
+                  <a
+                    href={activeSlide.link}
+                    className="inline-flex items-center gap-2 rounded-lg border border-white/30 bg-black/30 px-6 py-3.5 text-sm font-semibold text-white backdrop-blur-sm transition-all hover:bg-white/20 cursor-pointer"
+                  >
+                    View Details
+                    <ArrowRight className="h-4 w-4" />
+                  </a>
+                )}
               </div>
             </motion.div>
           </AnimatePresence>

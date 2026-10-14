@@ -5,6 +5,8 @@ import { motion, AnimatePresence } from 'motion/react';
 import CookwareCard from '@/components/product/CookwareCard';
 import type { Product } from '@/data/products';
 import { categories } from '@/data/categories';
+import { getWhatsAppUrl } from '@/config/site';
+import { Clock, MessageCircle, Sparkles, ArrowRight } from 'lucide-react';
 
 export default function AllProductsSection({ products }: { products: Product[] }) {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
@@ -19,17 +21,19 @@ export default function AllProductsSection({ products }: { products: Product[] }
       ? products
       : products.filter((p) => p.categoryId === selectedCategory);
 
+  const activeCategoryObj = categories.find((c) => c.id === selectedCategory);
+
   return (
     <section id="all-products" className="max-w-7xl mx-auto px-4 sm:px-6 py-20">
       <div className="text-center max-w-2xl mx-auto mb-10">
         <p className="text-xs uppercase tracking-[0.2em] font-semibold text-sage mb-2">
-          Curated Cookware
+          Curated Catalog
         </p>
         <h2 className="font-heading text-3xl sm:text-4xl font-bold text-charcoal">
           Explore Our Collection
         </h2>
         <p className="mt-3 text-sm sm:text-base text-warm-gray">
-          Engineered for everyday durability, effortless non-stick performance, and elegant tabletop presentation.
+          Engineered for everyday durability, effortless dining, and elegant tabletop presentation.
         </p>
       </div>
 
@@ -60,25 +64,55 @@ export default function AllProductsSection({ products }: { products: Product[] }
         })}
       </div>
 
-      {/* Product Grid */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={selectedCategory}
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -15 }}
-          transition={{ duration: 0.25 }}
-          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6"
-        >
-          {filteredProducts.map((product) => (
-            <CookwareCard key={product.id} product={product} />
-          ))}
-        </motion.div>
-      </AnimatePresence>
-
-      {filteredProducts.length === 0 && (
-        <div className="text-center py-16">
-          <p className="text-warm-gray text-sm">No cookware items currently available in this category.</p>
+      {/* Product Grid or Coming Soon Empty State */}
+      {filteredProducts.length > 0 ? (
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={selectedCategory}
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -15 }}
+            transition={{ duration: 0.25 }}
+            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6"
+          >
+            {filteredProducts.map((product) => (
+              <CookwareCard key={product.id} product={product} />
+            ))}
+          </motion.div>
+        </AnimatePresence>
+      ) : (
+        <div className="max-w-xl mx-auto my-8 p-8 sm:p-10 rounded-3xl bg-white border border-cream-dark shadow-sm text-center">
+          <div className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-cream flex items-center justify-center text-sage">
+            <Clock className="w-7 h-7" />
+          </div>
+          <span className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-sage bg-sage/10 px-3 py-1 rounded-full mb-3">
+            <Sparkles className="w-3.5 h-3.5" />
+            Coming Soon
+          </span>
+          <h3 className="font-heading text-2xl font-bold text-charcoal mb-2">
+            {activeCategoryObj?.name || 'Category'} Coming Soon
+          </h3>
+          <p className="text-sm text-warm-gray leading-relaxed mb-6">
+            We are currently curating and quality-inspecting new arrivals for our {activeCategoryObj?.name || 'upcoming'} category. In the meantime, browse our live tableware collection or contact us directly on WhatsApp for custom requests.
+          </p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+            <button
+              onClick={() => setSelectedCategory('all')}
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-charcoal hover:bg-neutral-800 text-white px-6 py-3 rounded-xl text-sm font-semibold transition-colors cursor-pointer"
+            >
+              Browse All Products
+              <ArrowRight className="w-4 h-4" />
+            </button>
+            <a
+              href={getWhatsAppUrl(`Hi Jirel Kitchen Hub, I would like to inquire about upcoming products in the ${activeCategoryObj?.name || 'kitchenware'} category.`)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#1EBE5D] text-white px-6 py-3 rounded-xl text-sm font-semibold transition-colors shadow-xs"
+            >
+              <MessageCircle className="w-4 h-4" />
+              Inquire on WhatsApp
+            </a>
+          </div>
         </div>
       )}
     </section>

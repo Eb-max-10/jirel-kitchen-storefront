@@ -10,10 +10,10 @@ export interface Promo {
 
 export const activePromo: Promo = {
   id: 'promo-1',
-  title: 'Limited Time Offer',
-  subtitle: 'Get 20% off all cast iron cookware this season',
-  discountText: 'Use code: JIREL20',
-  endDate: '2026-10-15T23:59:59Z',
+  title: 'Curated Kitchenware',
+  subtitle: 'Premium tableware and culinary essentials for your home',
+  discountText: 'JIREL KITCHEN HUB',
+  endDate: '2026-12-31T23:59:59Z',
   bgColor: '#3D5449',
-  isActive: true,
+  isActive: false,
 };

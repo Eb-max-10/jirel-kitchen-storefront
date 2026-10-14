@@ -370,28 +370,14 @@ Please confirm stock availability and delivery timeline for my location in Niger
               {product.name}
             </h1>
 
-            {/* Ratings */}
-            <div className="flex items-center gap-2 mt-3">
-              <div className="flex items-center">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Star
-                    key={i}
-                    className={cn(
-                      'w-4 h-4',
-                      i < Math.floor(product.rating)
-                        ? 'text-amber-400 fill-amber-400'
-                        : i < product.rating
-                        ? 'text-amber-400 fill-amber-400/50'
-                        : 'text-gray-200 fill-gray-200'
-                    )}
-                  />
-                ))}
-              </div>
-              <span className="text-sm font-semibold text-charcoal">
-                {product.rating.toFixed(1)}
+            {/* Authentic Quality & Inspection Guarantee */}
+            <div className="flex flex-wrap items-center gap-2.5 mt-3">
+              <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-sage bg-sage/10 px-2.5 py-1 rounded-md">
+                <Sparkles className="w-3.5 h-3.5 text-sage" />
+                Guaranteed Authentic Quality
               </span>
-              <span className="text-xs sm:text-sm text-warm-gray">
-                ({product.ratingCount} verified customer reviews)
+              <span className="text-xs text-warm-gray">
+                &bull; Inspected prior to Lagos fulfillment
               </span>
             </div>
           </div>
