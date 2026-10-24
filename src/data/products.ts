@@ -37,7 +37,7 @@ export const products: Product[] = [
     description:
       'Crafted from high-quality, durable ceramic, this elegant 16-piece dinnerware set features a modern matte ribbed design. Ideal for everyday dining or special occasions, it is both microwave and dishwasher safe for convenient use.',
     categoryId: 'tableware',
-    basePrice: 55000,
+    basePrice: 60000,
     isFeatured: true,
     isBestSeller: true,
     rating: 4.9,
@@ -62,7 +62,7 @@ export const products: Product[] = [
     description:
       'Crafted from premium stainless steel with advanced vacuum insulation, this bottle keeps your beverages hot or cold for hours. Designed with a leakproof cap, it is durable and easy to clean for daily use.',
     categoryId: 'tableware',
-    basePrice: 7500,
+    basePrice: 10500,
     isFeatured: false,
     isBestSeller: false,
     rating: 4.9,
@@ -87,7 +87,7 @@ export const products: Product[] = [
     description:
       'This elegant ceramic dish set includes lidded bowls and a cup beautifully presented on a sleek matching serving tray. Perfect for serving hot soups or side dishes, these pieces are durable, heat-resistant, and easy to clean.',
     categoryId: 'tableware',
-    basePrice: 12000,
+    basePrice: 15000,
     isFeatured: false,
     isBestSeller: false,
     rating: 4.9,
@@ -112,7 +112,7 @@ export const products: Product[] = [
     description:
       'Crafted from durable natural wood, these versatile nesting trays offer convenient storage and elegant serving options for your home. Built for daily use and easy maintenance, they combine functionality with rustic charm.',
     categoryId: 'tableware',
-    basePrice: 22000,
+    basePrice: 27000,
     isFeatured: false,
     isBestSeller: true,
     rating: 4.9,
@@ -137,7 +137,7 @@ export const products: Product[] = [
     description:
       'Elevate your dining experience with this sleek 16-piece modern grey tableware set, featuring durable plates, bowls, and mugs. Designed for daily use, these pieces are both dishwasher and microwave safe for your convenience.',
     categoryId: 'tableware',
-    basePrice: 8500,
+    basePrice: 11500,
     isFeatured: false,
     isBestSeller: false,
     rating: 4.9,
@@ -162,7 +162,7 @@ export const products: Product[] = [
     description:
       'Exquisitely designed with elegant gold tree motifs and metallic gold rims, this ceramic dinner set brings high-end luxury to your dining table. Crafted from durable, premium-grade ceramic, it is perfect for serving multi-course meals and requires gentle hand washing to preserve its luster.',
     categoryId: 'tableware',
-    basePrice: 65000,
+    basePrice: 70000,
     isFeatured: false,
     isBestSeller: true,
     rating: 4.9,
@@ -187,7 +187,7 @@ export const products: Product[] = [
     description:
       'This elegant ceramic serving bowl features a stunning gold rim edge designed to elevate your dining table presentation. Crafted from high-quality, durable ceramic, it is perfect for serving delicious meals and should be hand-washed gently to maintain its luxurious gold finish.',
     categoryId: 'tableware',
-    basePrice: 5500,
+    basePrice: 8500,
     isFeatured: false,
     isBestSeller: false,
     rating: 4.9,
@@ -212,7 +212,7 @@ export const products: Product[] = [
     description:
       'Crafted from premium double-walled stainless steel, this insulated travel tumbler keeps your beverages at the perfect temperature for hours. Designed with an ergonomic handle and reusable straw, it is durable, leak-resistant, and hand-wash recommended.',
     categoryId: 'tableware',
-    basePrice: 8500,
+    basePrice: 11500,
     isFeatured: false,
     isBestSeller: false,
     rating: 4.9,
@@ -237,7 +237,7 @@ export const products: Product[] = [
     description:
       'Crafted from durable food-grade stainless steel with a convenient lid and built-in phone holder for your daily workspace. Hand wash recommended to maintain the sleek insulated finish and longevity.',
     categoryId: 'tableware',
-    basePrice: 5500,
+    basePrice: 8500,
     isFeatured: false,
     isBestSeller: false,
     rating: 4.9,
@@ -262,7 +262,7 @@ export const products: Product[] = [
     description:
       'Crafted from premium gold-plated stainless steel, this 24-piece tableware set offers exceptional durability and a luxurious dining experience. Hand wash recommended to preserve the brilliant metallic finish.',
     categoryId: 'tableware',
-    basePrice: 25000,
+    basePrice: 30000,
     isFeatured: false,
     isBestSeller: true,
     rating: 4.9,
@@ -287,7 +287,7 @@ export const products: Product[] = [
     description:
       'Crafted from durable food-grade glass encased in a protective outer shell, this versatile mug features a sturdy handle and secure screw-top lid. It is easy to wash by hand and perfect for keeping your tea, water, or coffee safe on the go.',
     categoryId: 'tableware',
-    basePrice: 1800,
+    basePrice: 4800,
     isFeatured: false,
     isBestSeller: false,
     rating: 4.9,
@@ -312,7 +312,7 @@ export const products: Product[] = [
     description:
       'Crafted from premium high-fired ceramic, this elegant dinner plate features a pristine glossy finish accented with a sophisticated gold geometric rim. Perfect for formal dining and special occasions, it should be gently hand-washed to protect and preserve its metallic detailing.',
     categoryId: 'tableware',
-    basePrice: 5500,
+    basePrice: 8500,
     isFeatured: false,
     isBestSeller: false,
     rating: 4.9,
@@ -337,7 +337,7 @@ export const products: Product[] = [
     description:
       'This elegant porcelain dinnerware features an exquisite embossed gold-scrolled rim that adds luxury to any table setting. Crafted from durable food-safe ceramic, these plates are perfect for both special occasions and daily dining.',
     categoryId: 'tableware',
-    basePrice: 5000,
+    basePrice: 8000,
     isFeatured: false,
     isBestSeller: false,
     rating: 4.9,
@@ -362,7 +362,7 @@ export const products: Product[] = [
     description:
       'Crafted from high-quality white ceramic with an elegant gold-rimmed design for a luxurious dining experience. Durable and easy to clean, perfect for both daily family meals and special occasions.',
     categoryId: 'tableware',
-    basePrice: 5500,
+    basePrice: 8500,
     isFeatured: false,
     isBestSeller: false,
     rating: 4.9,
@@ -387,7 +387,7 @@ export const products: Product[] = [
     description:
       'Crafted from durable clear glass, this 2-piece tumbler set is designed for everyday use and elegant serving. It is easy to clean and dishwasher safe for your convenience.',
     categoryId: 'tableware',
-    basePrice: 4000,
+    basePrice: 7000,
     isFeatured: false,
     isBestSeller: false,
     rating: 4.9,
@@ -412,7 +412,7 @@ export const products: Product[] = [
     description:
       'Crafted from high-quality clear glass with an elegant embossed diamond pattern for a comfortable grip. Durable and stylish, this 6-piece tumbler set is ideal for everyday use and effortless cleaning.',
     categoryId: 'tableware',
-    basePrice: 6000,
+    basePrice: 9000,
     isFeatured: false,
     isBestSeller: false,
     rating: 4.9,
@@ -437,7 +437,7 @@ export const products: Product[] = [
     description:
       'Crafted from durable, food-grade BPA-free plastic, these vibrant glitter tumblers feature playful rainbow dome lids perfect for cold beverages. Hand washing with mild soap and a soft sponge is recommended to maintain the sparkling foil finish.',
     categoryId: 'tableware',
-    basePrice: 2600,
+    basePrice: 5600,
     isFeatured: false,
     isBestSeller: false,
     rating: 4.9,
@@ -462,7 +462,7 @@ export const products: Product[] = [
     description:
       'Crafted from durable BPA-free frosted material, this vibrant motivational water bottle set features convenient silicone straws for easy hydration on the go. Designed for longevity, simply hand wash to preserve the smooth gradient finish and daily time markers.',
     categoryId: 'tableware',
-    basePrice: 6500,
+    basePrice: 9500,
     isFeatured: false,
     isBestSeller: false,
     rating: 4.9,
@@ -487,7 +487,7 @@ export const products: Product[] = [
     description:
       'Crafted from durable food-grade stainless steel, this insulated travel flask keeps beverages hot or cold for hours on the go. Hand washing is recommended to maintain the vacuum seal and vibrant exterior finish.',
     categoryId: 'tableware',
-    basePrice: 5500,
+    basePrice: 8500,
     isFeatured: false,
     isBestSeller: false,
     rating: 4.9,
@@ -512,7 +512,7 @@ export const products: Product[] = [
     description:
       'Crafted from durable, high-quality transparent glass featuring a charming ribbed design for everyday use or special occasions. Easy to clean and maintain, this stylish cup and saucer set adds elegance to your coffee serving experience.',
     categoryId: 'tableware',
-    basePrice: 11250,
+    basePrice: 14250,
     isFeatured: false,
     isBestSeller: true,
     rating: 4.9,
