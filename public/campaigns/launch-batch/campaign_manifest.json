@@ -1,0 +1,127 @@
+{
+  "campaign_name": "Jirel Kitchen Hub — Initial Launch Batch",
+  "created_at": "2026-11-05T18:21:38Z",
+  "base_storefront_url": "https://jirelkitchen.com",
+  "concierge_whatsapp_number": "+2349167053972",
+  "batch_directory": "public/campaigns/launch-batch",
+  "total_products": 3,
+  "products": [
+    {
+      "id": "item-18",
+      "name": "Gradient Frosted Motivational Sports Water Bottle Set",
+      "short_name": "3-Piece Gradient Sports Water Bottle Set",
+      "slug": "gradient-frosted-motivational-sport-18",
+      "price_ngn": 9500,
+      "formatted_price": "₦9,500",
+      "category": "Tableware & Drinkware",
+      "links": {
+        "direct_storefront_url": "https://jirelkitchen.com/products/gradient-frosted-motivational-sport-18",
+        "relative_storefront_path": "/products/gradient-frosted-motivational-sport-18",
+        "whatsapp_order_url": "https://wa.me/2349167053972?text=Hello%20Jirel%20Kitchen%2C%20I%20want%20to%20order%20the%20Gradient%20Frosted%20Motivational%20Sports%20Water%20Bottle%20Set%20for%20%E2%82%A69%2C500"
+      },
+      "media_assets": {
+        "broll_video_5s": {
+          "status": "SKIPPED",
+          "aspect_ratio": "9:16",
+          "duration_seconds": 5,
+          "resolution": "720x1280",
+          "path": null,
+          "filename": "gradient-frosted-water-bottle-broll-5s.mp4"
+        },
+        "staged_square_photo": {
+          "dimensions": "800x800",
+          "jpg_path": "public/campaigns/launch-batch/gradient-frosted-water-bottle/gradient-frosted-water-bottle-800x800.jpg",
+          "webp_path": "public/campaigns/launch-batch/gradient-frosted-water-bottle/gradient-frosted-water-bottle-800x800.webp"
+        },
+        "staged_vertical_photo": {
+          "dimensions": "1080x1350 (4:5 Portrait)",
+          "jpg_path": "public/campaigns/launch-batch/gradient-frosted-water-bottle/gradient-frosted-water-bottle-1080x1350.jpg"
+        }
+      },
+      "copy_swipe": {
+        "casual": "Staying hydrated just got an aesthetic upgrade! 💧✨\n\nOur 3-piece Gradient Frosted Sports Bottle Set makes drinking your daily water effortlessly stylish. From your home desk to the gym or car cup holder, stay motivated all day with easy-sip silicone straws and daily time markers.\n\n✨ Complete 3-Bottle Set: ₦9,500\n✨ BPA-Free, Durable & Leak-Proof\n🚚 Fast Lagos dispatch + Nationwide safe delivery\n\nTap the link in bio to order yours directly or send us a WhatsApp DM now! 📲",
+        "urgency": "⚡ LIMITED RESTOCK ALERT! Our viral Gradient Frosted 3-Piece Water Bottle Set is moving fast. 🚨\n\nGet all 3 aesthetic motivational bottles for only ₦9,500 before our current launch batch sells out.\n\n✅ All 3 sizes included (large, medium & mini)\n✅ Leak-proof secure lids with silicone straws\n✅ Orders before 2PM dispatch same-day from Lagos\n\n👉 Don't wait until it's sold out — tap the direct order link or chat with us on WhatsApp to secure your set today!",
+        "vendor_affiliate": "Looking for high-demand wellness hampers, gym essentials, or client appreciation gifts? 🥗🏋️‍♂️\n\nThe 3-Piece Gradient Frosted Motivational Bottle Set delivers premium pastel aesthetics, high durability, and instant impulse-buy appeal at an unbeatable ₦9,500 price point.\n\n💼 Perfect for:\n• Fitness trainers & wellness communities\n• Meal prep vendors & lifestyle hampers\n• School & corporate back-to-work gifts\n\n📦 Bulk vendor inquiries and affiliate packages available.\nDirect order link & instant WhatsApp concierge in bio! 📲"
+      },
+      "folder_relative_path": "public/campaigns/launch-batch/gradient-frosted-water-bottle"
+    },
+    {
+      "id": "item-10",
+      "name": "24-Piece Gold Stainless Steel Flatware Tableware Set",
+      "short_name": "24-Piece Gold Cutlery Set with Stand",
+      "slug": "24-piece-gold-stainless-steel-flatw-10",
+      "price_ngn": 30000,
+      "formatted_price": "₦30,000",
+      "category": "Cutlery & Tableware",
+      "links": {
+        "direct_storefront_url": "https://jirelkitchen.com/products/24-piece-gold-stainless-steel-flatw-10",
+        "relative_storefront_path": "/products/24-piece-gold-stainless-steel-flatw-10",
+        "whatsapp_order_url": "https://wa.me/2349167053972?text=Hello%20Jirel%20Kitchen%2C%20I%20want%20to%20order%20the%2024-Piece%20Gold%20Stainless%20Steel%20Flatware%20Tableware%20Set%20for%20%E2%82%A630%2C000"
+      },
+      "media_assets": {
+        "broll_video_5s": {
+          "status": "SKIPPED",
+          "aspect_ratio": "9:16",
+          "duration_seconds": 5,
+          "resolution": "720x1280",
+          "path": null,
+          "filename": "24-piece-gold-flatware-broll-5s.mp4"
+        },
+        "staged_square_photo": {
+          "dimensions": "800x800",
+          "jpg_path": "public/campaigns/launch-batch/24-piece-gold-flatware/24-piece-gold-flatware-800x800.jpg",
+          "webp_path": "public/campaigns/launch-batch/24-piece-gold-flatware/24-piece-gold-flatware-800x800.webp"
+        },
+        "staged_vertical_photo": {
+          "dimensions": "1080x1350 (4:5 Portrait)",
+          "jpg_path": "public/campaigns/launch-batch/24-piece-gold-flatware/24-piece-gold-flatware-1080x1350.jpg"
+        }
+      },
+      "copy_swipe": {
+        "casual": "Golden hour, every time you dine. ✨🍽️\n\nUpgrade your table from basic to luxury banquet with our 24-Piece Gold Stainless Steel Flatware Set. Crafted with balanced ergonomics and a mirror-polished gold finish, it comes complete with dinner forks, knives, tablespoons, teaspoons, and a clear vertical display stand.\n\n✨ 24 Pieces (Service for 6) + Organizer Stand\n✨ Price: ₦30,000\n✨ Tarnish-resistant & rust-proof culinary steel\n\nElevate your Sunday family dinner or date night table — tap link to order now! 💛",
+        "urgency": "Hosting guests this weekend? Don't settle for mismatched cutlery. 👑\n\nOur flagship 24-Piece Gold Stainless Steel Tableware Set is down to final launch units!\n\n✨ Heavy-gauge, mirror-polished tarnish-resistant gold finish\n✨ Includes sleek countertop display organizer\n✨ Full 24-piece set: ₦30,000\n\n🚚 Dispatches within 24 hours from Lagos with transit damage guarantee.\nClick the link or send a WhatsApp DM right now to secure your set before this batch sells out!",
+        "vendor_affiliate": "Attention private chefs, caterers, food content creators, and banquet hosts! 📸🍴\n\nPresentation is everything. This 24-Piece Mirror-Polished Gold Cutlery Set instantly elevates food plating, banquet tables, and social video reels.\n\n🌟 Commercial Highlights:\n• Substantial heavyweight feel in hand\n• Scratch-resistant, food-safe gold electroplate\n• Display stand included for easy mobile event staging\n• Commercial retail value: ₦30,000\n\nShop directly on our storefront or message us on WhatsApp for priority business dispatch & affiliate perks!"
+      },
+      "folder_relative_path": "public/campaigns/launch-batch/24-piece-gold-flatware"
+    },
+    {
+      "id": "item-5",
+      "name": "16-Piece Modern Grey Dinnerware Set",
+      "short_name": "16-Piece Modern Grey Stoneware Set",
+      "slug": "16-piece-modern-grey-dinnerware-set-5",
+      "price_ngn": 11500,
+      "formatted_price": "₦11,500",
+      "category": "Dinnerware & Ceramics",
+      "links": {
+        "direct_storefront_url": "https://jirelkitchen.com/products/16-piece-modern-grey-dinnerware-set-5",
+        "relative_storefront_path": "/products/16-piece-modern-grey-dinnerware-set-5",
+        "whatsapp_order_url": "https://wa.me/2349167053972?text=Hello%20Jirel%20Kitchen%2C%20I%20want%20to%20order%20the%2016-Piece%20Modern%20Grey%20Dinnerware%20Set%20for%20%E2%82%A611%2C500"
+      },
+      "media_assets": {
+        "broll_video_5s": {
+          "status": "SKIPPED",
+          "aspect_ratio": "9:16",
+          "duration_seconds": 5,
+          "resolution": "720x1280",
+          "path": null,
+          "filename": "16-piece-grey-dinnerware-broll-5s.mp4"
+        },
+        "staged_square_photo": {
+          "dimensions": "800x800",
+          "jpg_path": "public/campaigns/launch-batch/16-piece-grey-dinnerware/16-piece-grey-dinnerware-800x800.jpg",
+          "webp_path": "public/campaigns/launch-batch/16-piece-grey-dinnerware/16-piece-grey-dinnerware-800x800.webp"
+        },
+        "staged_vertical_photo": {
+          "dimensions": "1080x1350 (4:5 Portrait)",
+          "jpg_path": "public/campaigns/launch-batch/16-piece-grey-dinnerware/16-piece-grey-dinnerware-1080x1350.jpg"
+        }
+      },
+      "copy_swipe": {
+        "casual": "Minimalist, modern, and made for everyday memories. ☕🍲\n\nOur 16-Piece Modern Grey Ceramic Dinnerware Set brings Scandinavian café aesthetic straight to your dining room. Full service for 4 includes generous dinner plates, side salad plates, deep cereal/soup bowls, and matching mugs.\n\n✨ 16 Pieces (Complete Service for 4)\n✨ Microwave & Dishwasher Safe\n✨ Introductory Price: ₦11,500\n\nTreat your home to an effortless tabletop glow-up — tap the order link in bio! 🩶",
+        "urgency": "🔥 UNBEATABLE TABLEWARE VALUE: Full 16-Piece Modern Stoneware Set for only ₦11,500!\n\nHere is everything inside your package:\n🍽️ 4 Large Dinner Plates\n🍽️ 4 Side/Dessert Plates\n🥣 4 Deep Soup/Cereal Bowls\n☕ 4 Hot Beverage Mugs\n\nAt this special launch price, stock will not last. 100% Transit Safe Arrival Guarantee across Nigeria.\nTap the link or WhatsApp us right now to lock in yours before the price adjusts!",
+        "vendor_affiliate": "Looking for durable, photogenic tableware that makes food presentation pop on camera? 🍳🥑\n\nThe 16-Piece Modern Grey Dinnerware Set offers a timeless neutral satin finish that frames jollof, pasta, grilled steaks, and soups with contemporary elegance.\n\n💡 Ideal for:\n• Airbnb & Shortlet apartments\n• Restaurants, bistros & cafes\n• Food stylists & content creators\n• Full 16-piece package at an accessible ₦11,500\n\n📍 Fast nationwide fulfillment from Lagos.\nDirect storefront purchase link & WhatsApp business concierge available now!"
+      },
+      "folder_relative_path": "public/campaigns/launch-batch/16-piece-grey-dinnerware"
+    }
+  ]
+}
