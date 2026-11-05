@@ -1,6 +1,6 @@
 {
   "campaign_name": "Jirel Kitchen Hub — Initial Launch Batch",
-  "created_at": "2026-11-05T18:21:38Z",
+  "created_at": "2026-11-05T18:43:56Z",
   "base_storefront_url": "https://jirelkitchen.com",
   "concierge_whatsapp_number": "+2349167053972",
   "batch_directory": "public/campaigns/launch-batch",
@@ -21,11 +21,11 @@
       },
       "media_assets": {
         "broll_video_5s": {
-          "status": "SKIPPED",
+          "status": "READY",
           "aspect_ratio": "9:16",
           "duration_seconds": 5,
           "resolution": "720x1280",
-          "path": null,
+          "path": "public/campaigns/launch-batch/gradient-frosted-water-bottle/gradient-frosted-water-bottle-broll-5s.mp4",
           "filename": "gradient-frosted-water-bottle-broll-5s.mp4"
         },
         "staged_square_photo": {
@@ -60,11 +60,11 @@
       },
       "media_assets": {
         "broll_video_5s": {
-          "status": "SKIPPED",
+          "status": "READY",
           "aspect_ratio": "9:16",
           "duration_seconds": 5,
           "resolution": "720x1280",
-          "path": null,
+          "path": "public/campaigns/launch-batch/24-piece-gold-flatware/24-piece-gold-flatware-broll-5s.mp4",
           "filename": "24-piece-gold-flatware-broll-5s.mp4"
         },
         "staged_square_photo": {
@@ -99,11 +99,11 @@
       },
       "media_assets": {
         "broll_video_5s": {
-          "status": "SKIPPED",
+          "status": "READY",
           "aspect_ratio": "9:16",
           "duration_seconds": 5,
           "resolution": "720x1280",
-          "path": null,
+          "path": "public/campaigns/launch-batch/16-piece-grey-dinnerware/16-piece-grey-dinnerware-broll-5s.mp4",
           "filename": "16-piece-grey-dinnerware-broll-5s.mp4"
         },
         "staged_square_photo": {
