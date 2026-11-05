@@ -79,11 +79,11 @@ LAUNCH_PRODUCTS = [
         "source_image": "public/images/products/gradient-frosted-motivational-sport-18.webp",
         "category": "Tableware & Drinkware",
         "broll_prompt": (
-            "<FIRST_FRAME> Cinematic clean commercial b-roll product shot of the gradient frosted sports water bottles "
-            "on a luxury kitchen marble countertop. Clean motion only: smooth subtle slow forward push-in camera movement, "
-            "gentle soft warm daylight shifting across the frosted pastel gradient surfaces, subtle ambient reflections. "
-            "Strictly silent and clean footage: no voiceover, no speech, no background music, no text overlays, "
-            "no titles, no captions, no watermarks, photorealistic 8k commercial cinematography."
+            "<FIRST_FRAME> Cinematic clean commercial b-roll product shot of the 3-in-1 gradient frosted water bottle set "
+            "(large tumbler with handle and straw, medium sports bottle, and slim bottle) on a luxury kitchen marble countertop. "
+            "Clean motion only: smooth subtle slow forward push-in camera movement, gentle soft warm daylight shifting across the "
+            "frosted pastel gradient surfaces, subtle ambient reflections. Strictly silent and clean footage: no voiceover, no speech, "
+            "no background music, no text overlays, no titles, no captions, no watermarks, photorealistic 8k commercial cinematography."
         ),
         "copy_swipe": {
             "casual": (
